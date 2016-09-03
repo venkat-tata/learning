@@ -1,0 +1,107 @@
+Webex Meeting ID: 827 381 458
+Telecon Meeting ID: 264514
+
+
+Notes:
+
+1. In Microservice app (https://firstmicro-predix-microservice-cf-jsr.run.aws-usw02-pr.ice.predix.io/services/ping) how can invoke DynamicService? Current example is invoking DefaultService!
+
+
+Saving data into DB with Simple Rest client
+
+URL: https://samplerestdept.run.aws-usw02-pr.ice.predix.io/setEmployeeData
+Headers: Content-Type: application/json
+Data: {"empId":500,"empName":"Venkat Tata"}
+
+=====================================================================================================================
+UAA configuration
+Instance: venkat-secure-uaa-instance
+UAA URL: https://2370f814-cc6d-4916-811f-191e0c0421b4.predix-uaa.run.aws-usw02-pr.ice.predix.io
+
+Adminclientsecret : adminclient
+
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiIzOTkzNTNmOWMxMDQ0ZWQ0YmQ5YzQ1ZDg4ODNhZTcxZSIsInN1YiI6ImFkbWluIiwic2NvcGUiOlsiY2xpZW50cy5yZWFkIiwiY2xpZW50cy5zZWNyZXQiLCJpZHBzLndyaXRlIiwidWFhLnJlc291cmNlIiwiem9uZXMuMjM3MGY4MTQtY2M2ZC00OTE2LTgxMWYtMTkxZTBjMDQyMWI0LmFkbWluIiwiY2xpZW50cy53cml0ZSIsImNsaWVudHMuYWRtaW4iLCJpZHBzLnJlYWQiLCJzY2ltLndyaXRlIiwic2NpbS5yZWFkIl0sImNsaWVudF9pZCI6ImFkbWluIiwiY2lkIjoiYWRtaW4iLCJhenAiOiJhZG1pbiIsImdyYW50X3R5cGUiOiJjbGllbnRfY3JlZGVudGlhbHMiLCJyZXZfc2lnIjoiNDVhMDE3N2IiLCJpYXQiOjE0NzI5MTQ3MjEsImV4cCI6MTQ3Mjk1NzkyMSwiaXNzIjoiaHR0cHM6Ly8yMzcwZjgxNC1jYzZkLTQ5MTYtODExZi0xOTFlMGMwNDIxYjQucHJlZGl4LXVhYS5ydW4uYXdzLXVzdzAyLXByLmljZS5wcmVkaXguaW8vb2F1dGgvdG9rZW4iLCJ6aWQiOiIyMzcwZjgxNC1jYzZkLTQ5MTYtODExZi0xOTFlMGMwNDIxYjQiLCJhdWQiOlsic2NpbSIsImNsaWVudHMiLCJ1YWEiLCJ6b25lcy4yMzcwZjgxNC1jYzZkLTQ5MTYtODExZi0xOTFlMGMwNDIxYjQiLCJhZG1pbiIsImlkcHMiXX0.dw8Z-6y9nh8SF20BIp2CiqC5xyKPTXj-dHhyUPAOL0AkmQIl70m5Q3Qwz1he5dK2_7zZ6TmXQld8UX4mlypDNFD0rdHlXaGnuxRSERqwRYKtDRulVqWnfwfSpBUJ7rSqSjrEBIXKmPjUqDHG9Tep7SnHfuh6FStVsEBSw0YQgH9y7Z9A7dcWW94B5K8LxTOfdUDaSQOJFBaUYRyB7n3fqwzqP8uKWjAEs4aiDTy0-dc8iZNjcXzTBZ525exehZ6MPTMadx5bJ9BfSqYxF6Fsxjlgv5F7gy2mvKsceyN7mAN6pKeqe6vZDcCumXb6g1wTs3mVOmru1cQIf3wmYKKIGA",
+  "token_type": "bearer",
+  "expires_in": 43199,
+  "scope": "clients.read clients.secret idps.write uaa.resource zones.2370f814-cc6d-4916-811f-191e0c0421b4.admin clients.write clients.admin idps.read scim.write scim.read",
+  "jti": "399353f9c1044ed4bd9c45d8883ae71e"
+}
+
+
+
+client id: venkat_client
+Client secret: venkatclient
+Success! Here is the response from UAA. Notice the grant types, scopes, and authorities granted to the Client Id which define privileges granted to it by the UAA instance.
+
+ {
+  "scope": [
+    "uaa.none",
+    "openid"
+  ],
+  "client_id": "venkat_client",
+  "resource_ids": [
+    "none"
+  ],
+  "authorized_grant_types": [
+    "refresh_token",
+    "client_credentials",
+    "password",
+    "authorization_code"
+  ],
+  "autoapprove": [
+    "openid"
+  ],
+  "authorities": [
+    "uaa.resource",
+    "openid",
+    "uaa.none"
+  ],
+  "lastModified": 1472914842689
+}
+
+username: venkat.tata
+password: venkat
+email: venkata.tata@ge.com
+
+After logged in as user:
+
+Success! Here is the response from UAA. Notice the User is not a member of any Groups yet which will be needed later to access Services directly.
+
+ {
+  "id": "b5ec5984-3362-41bf-bc60-5b7393f2c61a",
+  "meta": {
+    "version": 0,
+    "created": "2016-09-03T15:02:04.329Z",
+    "lastModified": "2016-09-03T15:02:04.329Z"
+  },
+  "userName": "venkat.tata",
+  "name": {},
+  "emails": [
+    {
+      "value": "venkata.tata@ge.com",
+      "primary": false
+    }
+  ],
+  "groups": [],
+  "approvals": [],
+  "active": true,
+  "verified": true,
+  "origin": "uaa",
+  "zoneId": "2370f814-cc6d-4916-811f-191e0c0421b4",
+  "passwordLastModified": "2016-09-03T15:02:04.000Z",
+  "schemas": [
+    "urn:scim:schemas:core:1.0"
+  ]
+}
+
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiJkMGQxYWRhNmVmMmY0NTYyODE2ZDU0NmU3ZTczNGYxOSIsInN1YiI6ImI1ZWM1OTg0LTMzNjItNDFiZi1iYzYwLTViNzM5M2YyYzYxYSIsInNjb3BlIjpbIm9wZW5pZCJdLCJjbGllbnRfaWQiOiJ2ZW5rYXRfY2xpZW50IiwiY2lkIjoidmVua2F0X2NsaWVudCIsImF6cCI6InZlbmthdF9jbGllbnQiLCJncmFudF90eXBlIjoicGFzc3dvcmQiLCJ1c2VyX2lkIjoiYjVlYzU5ODQtMzM2Mi00MWJmLWJjNjAtNWI3MzkzZjJjNjFhIiwib3JpZ2luIjoidWFhIiwidXNlcl9uYW1lIjoidmVua2F0LnRhdGEiLCJlbWFpbCI6InZlbmthdGEudGF0YUBnZS5jb20iLCJhdXRoX3RpbWUiOjE0NzI5MTQ5NzUsInJldl9zaWciOiJhMmI4ZmI5OCIsImlhdCI6MTQ3MjkxNDk3NSwiZXhwIjoxNDcyOTU4MTc1LCJpc3MiOiJodHRwczovLzIzNzBmODE0LWNjNmQtNDkxNi04MTFmLTE5MWUwYzA0MjFiNC5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjIzNzBmODE0LWNjNmQtNDkxNi04MTFmLTE5MWUwYzA0MjFiNCIsImF1ZCI6WyJ2ZW5rYXRfY2xpZW50Iiwib3BlbmlkIl19.LKE7NQveZy28U87N1OuPVEYbK0yBNm5Av1zuuwWqlegg1yzUZeangh6_XpH1TpIE3PHyxniBwikIyl1C_toRhJXNebEUIn4ICt7cBUV07_1XbGirEVZtPRuu7-9IaX4QPsXTcHD5wUMxdidtOFQV5Mqalj20pApGRLe8aKC5JzDgp1ADjH5qbJKP7QsY5NXfxjd5jxHQuCTan47FmFP2mdp1ak3QVaSPYmdh2n0XStP6N3CrQVKDoV4InFSQLGSCdn3czs6_pPXri0QIDZIaJn1nKNeh2-ys-nJkMeS-a5PKKR_pK9ZMmX4gFiGhjCgwGE3InFNKRcafMx6Vg7urJg",
+  "token_type": "bearer",
+  "refresh_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiJkMGQxYWRhNmVmMmY0NTYyODE2ZDU0NmU3ZTczNGYxOS1yIiwic3ViIjoiYjVlYzU5ODQtMzM2Mi00MWJmLWJjNjAtNWI3MzkzZjJjNjFhIiwic2NvcGUiOlsib3BlbmlkIl0sImlhdCI6MTQ3MjkxNDk3NSwiZXhwIjoxNDc1NTA2OTc1LCJjaWQiOiJ2ZW5rYXRfY2xpZW50IiwiY2xpZW50X2lkIjoidmVua2F0X2NsaWVudCIsImlzcyI6Imh0dHBzOi8vMjM3MGY4MTQtY2M2ZC00OTE2LTgxMWYtMTkxZTBjMDQyMWI0LnByZWRpeC11YWEucnVuLmF3cy11c3cwMi1wci5pY2UucHJlZGl4LmlvL29hdXRoL3Rva2VuIiwiemlkIjoiMjM3MGY4MTQtY2M2ZC00OTE2LTgxMWYtMTkxZTBjMDQyMWI0IiwiZ3JhbnRfdHlwZSI6InBhc3N3b3JkIiwidXNlcl9uYW1lIjoidmVua2F0LnRhdGEiLCJvcmlnaW4iOiJ1YWEiLCJ1c2VyX2lkIjoiYjVlYzU5ODQtMzM2Mi00MWJmLWJjNjAtNWI3MzkzZjJjNjFhIiwicmV2X3NpZyI6ImEyYjhmYjk4IiwiYXVkIjpbInZlbmthdF9jbGllbnQiLCJvcGVuaWQiXX0.sExAech2aNTnj4SfxqDyR46odsTSBFFcg0CfGSFHpaWuyvMxpnycngYlvfOOJyOHG1qUuwM1Yt_oLr38FYVkjq9VGFvjWmt0xl1vKQGWhiY_v2k64pi23sam6cSrURfMugW0iAZjHQolcUSeeh_YYv5lxIRYPs7yW2kslEQ4dKOLpm0M8LuV3Rh9cMZGM4ork8hcj2Ac8SNW4lVdEFVA_54mVwJtlbNi9NmheHrDShaRS4QFqm0zQ4N_Xs_bVpaUz5pbYEUKUG47LnZMcHzayXSMbP4XKUwx8T9L7OAVEz-VBFINXkhS3KPqzXBNNStP9EgcS7gu_acEqhNhkFeIsw",
+  "expires_in": 43199,
+  "scope": "openid",
+  "jti": "d0d1ada6ef2f4562816d546e7e734f19"
+}
+=====================================================================================================================
+
