@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+predix-microservice-cf-jsr,com.ge.predix.solsvc.boot.service.cxf,ApplicationJSONProvider,124,45,14,2,21,12,11,3,3,3
+predix-microservice-cf-jsr,com.ge.predix.solsvc.boot.service.cxf,DefaultService,0,30,0,0,0,7,0,3,0,3
+predix-microservice-cf-jsr,com.ge.predix.solsvc.boot.service.cxf,DynamicServiceImpl,0,36,0,0,0,9,0,4,0,4
+predix-microservice-cf-jsr,com.ge.predix.solsvc.spi,ServiceManagerServiceImpl,44,33,3,3,12,13,4,4,1,4
+predix-microservice-cf-jsr,com.ge.predix.solsvc.spi,NamedCxfProperties,28,0,0,0,2,0,4,0,4,0
+predix-microservice-cf-jsr,com.ge.predix.solsvc.boot,Application,114,24,8,0,22,4,5,4,1,4
+predix-microservice-cf-jsr,com.ge.predix.solsvc.boot,PredixBootSecurityConfig,6,38,2,2,1,10,2,4,0,4

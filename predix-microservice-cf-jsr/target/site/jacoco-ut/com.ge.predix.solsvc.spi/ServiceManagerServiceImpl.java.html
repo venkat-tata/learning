@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ServiceManagerServiceImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">predix-microservice-cf-jsr</a> &gt; <a href="index.source.html" class="el_package">com.ge.predix.solsvc.spi</a> &gt; <span class="el_source">ServiceManagerServiceImpl.java</span></div><h1>ServiceManagerServiceImpl.java</h1><pre class="source lang-java linenums">package com.ge.predix.solsvc.spi;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
+import org.apache.cxf.endpoint.Server;
+import org.apache.cxf.jaxrs.spring.JAXRSServerFactoryBeanDefinitionParser.SpringJAXRSServerFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ * 
+ * @author predix
+ */
+@Component
+public class ServiceManagerServiceImpl
+        implements IServiceManagerService
+{
+
+
+    @Autowired
+    private SpringJAXRSServerFactoryBean defaultRestService;
+
+    /**
+     * 
+     */
+    protected Server                     server;
+
+<span class="fc" id="L32">    private List&lt;Object&gt;                 serviceBeans             = new ArrayList&lt;Object&gt;();</span>
+
+    /**
+     * setup up an in-memory jetty so we can call API in the context of 'this'
+     * test case JVM
+     * 
+     * @param service -
+     * @param attributeMap -
+     */
+    public void setupServer(Object service, Map&lt;String, String&gt; attributeMap)
+    {
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if ( service == null ) throw new IllegalStateException(&quot;service null&quot;); //$NON-NLS-1$</span>
+<span class="fc" id="L44">        this.serviceBeans.add(service);</span>
+<span class="fc" id="L45">        this.defaultRestService.setServiceBeans(this.serviceBeans);</span>
+
+<span class="fc" id="L47">        String providerType = null;</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if ( attributeMap != null ) providerType = attributeMap.get(NamedCxfProperties.PREDIX_CUSTOM_CXF_PROVIDERS);</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if ( providerType != null )</span>
+        {
+            Object provider;
+            try
+            {
+<span class="nc" id="L54">                Class&lt;?&gt; c = Class.forName(providerType);</span>
+<span class="nc" id="L55">                provider = c.newInstance();</span>
+            }
+<span class="nc" id="L57">            catch (ClassNotFoundException e)</span>
+            {
+<span class="nc" id="L59">                throw new RuntimeException(e);</span>
+            }
+<span class="nc" id="L61">            catch (InstantiationException e)</span>
+            {
+<span class="nc" id="L63">                throw new RuntimeException(e);</span>
+            }
+<span class="nc" id="L65">            catch (IllegalAccessException e)</span>
+            {
+<span class="nc" id="L67">                throw new RuntimeException(e);</span>
+<span class="nc" id="L68">            }</span>
+<span class="nc" id="L69">            this.defaultRestService.setProvider(provider);</span>
+        }
+<span class="fc" id="L71">    }</span>
+
+    /**
+	 * 
+	 */
+    public ServiceManagerServiceImpl()
+    {
+<span class="fc" id="L78">        super();</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+	 * 
+	 */
+    @PostConstruct
+    public void init()
+    {
+        //
+<span class="fc" id="L88">    }</span>
+
+    @Override
+    public void createRestWebService(Object arg0)
+    {
+<span class="nc" id="L93">        setupServer(arg0, null);</span>
+
+<span class="nc" id="L95">    }</span>
+
+    @Override
+    public void createRestWebService(Object arg0, Map&lt;String, String&gt; arg1)
+    {
+<span class="fc" id="L100">        setupServer(arg0, arg1);</span>
+
+<span class="fc" id="L102">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

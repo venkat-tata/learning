@@ -1,0 +1,9 @@
+com/ge/predix/solsvc/boot/PredixBootSecurityConfig.class
+com/ge/predix/solsvc/spi/IServiceManagerService.class
+com/ge/predix/solsvc/boot/Application.class
+com/ge/predix/solsvc/boot/service/cxf/DynamicServiceImpl.class
+com/ge/predix/solsvc/boot/service/cxf/DefaultService.class
+com/ge/predix/solsvc/boot/service/cxf/DynamicService.class
+com/ge/predix/solsvc/spi/ServiceManagerServiceImpl.class
+com/ge/predix/solsvc/boot/service/cxf/ApplicationJSONProvider.class
+com/ge/predix/solsvc/spi/NamedCxfProperties.class

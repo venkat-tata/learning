@@ -1,0 +1,9 @@
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/boot/service/cxf/DynamicServiceImpl.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/boot/Application.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/boot/service/cxf/ApplicationJSONProvider.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/boot/PredixBootSecurityConfig.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/spi/ServiceManagerServiceImpl.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/boot/service/cxf/DefaultService.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/spi/NamedCxfProperties.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/boot/service/cxf/DynamicService.java
+/predix/predix-microservice-cf-jsr/src/main/java/com/ge/predix/solsvc/spi/IServiceManagerService.java

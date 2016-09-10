@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PredixBootSecurityConfig.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">predix-microservice-cf-jsr</a> &gt; <a href="index.source.html" class="el_package">com.ge.predix.solsvc.boot</a> &gt; <span class="el_source">PredixBootSecurityConfig.java</span></div><h1>PredixBootSecurityConfig.java</h1><pre class="source lang-java linenums">package com.ge.predix.solsvc.boot;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.autoconfigure.security.SpringBootWebSecurityConfiguration;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+
+/*
+ * This class adds the required Headers to the HTTP response being sent to the client
+ * @Author - Swapna Vad
+ */
+
+/**
+ * 
+ * @author 212546387 -
+ */
+@Configuration
+@EnableWebSecurity
+@ConditionalOnProperty(prefix = &quot;security.basic&quot;, name = &quot;enabled&quot;, havingValue = &quot;false&quot;)
+<span class="fc" id="L27">public class PredixBootSecurityConfig extends WebSecurityConfigurerAdapter{</span>
+	/**
+	 * read the security headers from the properties file
+	 */
+	@Autowired
+	private SecurityProperties security;
+	
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		//Do Nothing
+<span class="fc" id="L38">	}</span>
+	
+	/* 
+	 * Adds the following headers to the http response. Reads the value from properties file.
+	 * security.basic.enabled
+	 * security.headers.cache 
+	 * security.headers.content-type 
+	 * security.headers.frame
+	 * security.headers.xss
+	 * security.filter-order
+	 */
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">		if (this.security.isRequireSsl()) {</span>
+<span class="nc" id="L53">			http.requiresChannel().anyRequest().requiresSecure();</span>
+		}
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">		if (!this.security.isEnableCsrf()) {</span>
+<span class="fc" id="L56">			http.csrf().disable();</span>
+		}
+<span class="fc" id="L58">		SpringBootWebSecurityConfiguration.configureHeaders(http.headers(),</span>
+<span class="fc" id="L59">				this.security.getHeaders());</span>
+		
+<span class="fc" id="L61">		http.headers().addHeaderWriter(new StaticHeadersWriter(&quot;X-Content-Security-Policy&quot;,&quot;script-src 'self'&quot;));	 //$NON-NLS-1$ //$NON-NLS-2$</span>
+<span class="fc" id="L62">	}</span>
+	
+	/* 
+	 *
+	 * 
+	 */
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth)
+			throws Exception {
+		//do Nothing
+<span class="fc" id="L72">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

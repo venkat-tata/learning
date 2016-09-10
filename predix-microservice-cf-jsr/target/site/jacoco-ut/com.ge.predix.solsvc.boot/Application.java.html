@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Application.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">predix-microservice-cf-jsr</a> &gt; <a href="index.source.html" class="el_package">com.ge.predix.solsvc.boot</a> &gt; <span class="el_source">Application.java</span></div><h1>Application.java</h1><pre class="source lang-java linenums">package com.ge.predix.solsvc.boot;
+
+import java.util.Arrays;
+import java.util.Iterator;
+
+import org.apache.cxf.transport.servlet.CXFServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.web.context.support.StandardServletEnvironment;
+
+/**
+ * This project uses a SpringBoot HelloWorld as a starting point. Then it adds in the capability to cf push a 
+ * CXF Rest Service simply by extending PredixSpringBootInitializer.
+ * 
+ * The idea is that you'll use this project as a starting point for creating your own Rest service.  You can change
+ * &quot;predix-microservice-cf&quot; to &quot;my-rest-service&quot; or a name that suits you.
+ * 
+ * We provide 2 types of Rest APIs/Impls and tests that invoke them
+ * 1. DefaultService - example using a Spring Bean registered with CXF and standard java annotations
+ * 2. DynamicService - example using the original Predix way of registering a Rest Service with CXF
+ *  
+ * The project also provides a point of view around Property file management and Spring Profiles. Here is the hierarchy
+ * such that each lower number overrides the one's after it
+ * http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
+ * 
+ * 1. Command line arguments.
+ * 2. JNDI attributes from java:comp/env.
+ * 3. Java System properties (System.getProperties()).
+ * 4. OS environment variables.
+ * 5. A RandomValuePropertySource that only has properties in random.*.
+ * 6. Profile-specific application properties outside of your packaged jar (application-{profile}.properties and YAML variants)
+ * 7. Profile-specific application properties packaged inside your jar (application-{profile}.properties and YAML variants)
+ * 8. Application properties outside of your packaged jar (application.properties and YAML variants).
+ * 9. Application properties packaged inside your jar (application.properties and YAML variants).
+ * 10. @PropertySource annotations on your @Configuration classes. 
+ * 11. Default properties (specified using SpringApplication.setDefaultProperties)
+ * 
+ * Note that Spring Beans in other packages will not be automatically scanned.  You'll need to add 
+ * this command if you have other packages this command will do it
+ * @ComponentScan(basePackages = {&quot;com.ge.package1&quot;, &quot;com.ge.package2&quot;})
+ * 
+ * Or if you want to import Spring XMLs from other dependent projects you can use the @ImportResource, e.g. 
+ * @ImportResource(
+ * {
+ *         &quot;classpath*:META-INF/spring/predix-rest-client-scan-context.xml&quot;
+ * })
+ * 
+ * For other Spring Features see: http://docs.spring.io/spring-boot/docs/current/reference/html/
+ * 
+ * @author predix
+ */
+@EnableAutoConfiguration(exclude =
+{
+        //Add any configuration loading call you want to exclude
+        
+})
+@PropertySource(&quot;classpath:application-default.properties&quot;)
+@ImportResource(
+{
+    &quot;classpath*:META-INF/spring/predix-microservice-cf-jsr-cxf-context.xml&quot;,
+    &quot;classpath*:META-INF/spring/predix-microservice-cf-jsr-scan-context.xml&quot;
+       
+})
+<span class="fc" id="L73">public class Application</span>
+{
+<span class="fc" id="L75">    private static final Logger log = LoggerFactory.getLogger(Application.class);</span>
+
+
+    /**
+     * @param args -
+     */
+    @SuppressWarnings(
+    {
+            &quot;nls&quot;, &quot;resource&quot;
+    })
+    public static void main(String[] args)
+    {
+<span class="nc" id="L87">        SpringApplication springApplication = new SpringApplication(Application.class);</span>
+<span class="nc" id="L88">        ApplicationContext ctx = springApplication.run(args);</span>
+
+<span class="nc" id="L90">        log.debug(&quot;Let's inspect the beans provided by Spring Boot:&quot;);</span>
+<span class="nc" id="L91">        String[] beanNames = ctx.getBeanDefinitionNames();</span>
+<span class="nc" id="L92">        Arrays.sort(beanNames);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        for (String beanName : beanNames)</span>
+        {
+<span class="nc" id="L95">            log.debug(beanName);</span>
+        }
+        
+<span class="nc" id="L98">        log.debug(&quot;Let's inspect the profiles provided by Spring Boot:&quot;);</span>
+<span class="nc" id="L99">        String profiles[] = ctx.getEnvironment().getActiveProfiles();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        for (int i = 0; i &lt; profiles.length; i++)</span>
+<span class="nc" id="L101">            log.debug(&quot;profile=&quot; + profiles[i]);</span>
+
+<span class="nc" id="L103">        log.debug(&quot;Let's inspect the properties provided by Spring Boot:&quot;);</span>
+<span class="nc" id="L104">        MutablePropertySources propertySources = ((StandardServletEnvironment) ctx.getEnvironment())</span>
+<span class="nc" id="L105">                .getPropertySources();</span>
+<span class="nc" id="L106">        Iterator&lt;org.springframework.core.env.PropertySource&lt;?&gt;&gt; iterator = propertySources.iterator();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        while (iterator.hasNext()) {</span>
+<span class="nc" id="L108">            Object propertySourceObject = iterator.next();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if ( propertySourceObject instanceof org.springframework.core.env.PropertySource ) {</span>
+<span class="nc" id="L110">                org.springframework.core.env.PropertySource&lt;?&gt; propertySource = (org.springframework.core.env.PropertySource&lt;?&gt;) propertySourceObject;</span>
+<span class="nc" id="L111">                log.debug(&quot;propertySource=&quot; + propertySource.getName() + &quot; values=&quot; + propertySource.getSource() + &quot;class=&quot; + propertySource.getClass());           </span>
+            }         
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">    }</span>
+
+    /**
+     * Ensure the Tomcat container comes up, not the Jetty one.
+     * @return - the factory
+     */
+    @Bean
+    public TomcatEmbeddedServletContainerFactory tomcatEmbeddedServletContainerFactory()
+    {
+<span class="fc" id="L123">        return new TomcatEmbeddedServletContainerFactory();</span>
+    }
+    
+    /**
+     * Spin up a CXFServlet and register the url beyond which CXF will parse and direct traffic to
+     * Predix in CF uses &quot;services&quot; plural as the standard URL.  
+     * 
+     * @return -
+     */
+    @SuppressWarnings(&quot;nls&quot;)
+    @Bean
+    public ServletRegistrationBean servletRegistrationBean()
+    {
+<span class="fc" id="L136">        return new ServletRegistrationBean(new CXFServlet(), &quot;/services/*&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>
