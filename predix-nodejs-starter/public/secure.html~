@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Security Starter Application</title>
+  <link rel="stylesheet" href="stylesheets/style.css"></link>
+  <!--script src="../scripts/Chart.js"></script>
+  <script src="../scripts/Timeseries.js"></script-->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+</head>
+<style>
+            .odd {
+                background-color: #B8B8B8;
+            }
+            .even {
+                background-color: #C8C8C8;
+            }
+            table{
+                border: 1px solid #ccc;
+            }
+            li.right { float:right; }
+        </style>
+<script>
+
+var app = angular.module('myApp', []);
+
+/*app.controller('CountryCtrl', function($scope, $http) { 
+alert("Inside the test");
+    $http.get('https://samplerestdept.run.aws-usw02-pr.ice.predix.io/getStaffDetailsFromDB/')
+    .then(function(response) {
+console.log("data is " + JSON.stringify(response.data));
+        $scope.countries = response.data;
+;
+
+    });
+}); */
+
+
+app.controller('EmployeeDB', function($scope, $http) {
+//alert("Inside the test");
+    $http.get('https://samplerestdept.run.aws-usw02-pr.ice.predix.io/getEmployeeFromDB/')
+    .then(function(response) {
+console.log("data is " + JSON.stringify(response.data));
+        $scope.empdata = response.data;
+
+
+    });
+});
+
+
+
+    </script>
+<body style="background-color:#808080;" ng-app="myApp" >
+<div class="header" style="height:200px">
+    <h2>Predix Exercise</h2>
+
+
+  <div class="container">
+    <p>Employee data maintenance App.</p>   
+   <ul>
+      <li>
+        <a href="/logout">Logout</a>
+      </li>
+    </ul> 
+  
+</div></div>
+<br/><br/>
+<!--div  ng-controller="CountryCtrl" style="margin-top:100px"><center>
+    <table style="width: 50%; border: 1px solid  thin;" cellpadding="1" cellspacing="0" >
+
+      <tr>
+  <th style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11pt;">Employee ID</th>
+
+        <th style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11pt;">Staff Name</th>
+
+  <th style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11pt;">Department Name</th>
+
+
+      </tr>
+
+      <tr ng-repeat="countries in countries" ng-class-odd="'odd'" ng-class-even="'even'">
+  <td style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 9pt;">{{countries.employeeID}}</td>
+
+        <td style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 9pt;">{{countries.staffName}}</td>
+
+  <td style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 9pt;">{{countries.departname}}</td>
+
+       
+
+      </tr>
+
+    </table></center></div-->
+  
+ 
+  
+<div ng-controller="EmployeeDB" style="margin-top:100px"><center>
+    <table style="width: 50%; border: 1px solid  thin;" cellpadding="1" cellspacing="0" >
+
+      <tr>
+  <th style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11pt;">Employee ID</th>
+  <th style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11pt;">DEPT ID</th>
+
+        <th style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11pt;">Employee Name</th>
+
+  <th style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 11pt;">Employee Last Name</th>
+
+
+      </tr>
+
+      <tr ng-repeat="employee in empdata" ng-class-odd="'odd'" ng-class-even="'even'">
+  <td style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 9pt;">{{employee.employeeID}}</td>
+
+        <td style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 9pt;">{{employee.deptId}}</td>
+
+  <td style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 9pt;">{{employee.empName}}</td>
+ <td style="text-align:center;font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 9pt;">{{employee.lastname}}</td>
+     </tr>
+   </table></center>
+ 
+	<h2> TO SAVE EMPLOYEE DATA, ENTER DETAILS </h2> 
+	<div ng-app="myApp" ng-controller="formCtrl">
+	  <form novalidate>
+	    First Name:<br>
+	    <input type="text" ng-model="emp.empName"><br>
+	    Last Name:<br>
+	    <input type="text" ng-model="emp.lastname">
+	    <br><br>
+	    <button ng-click="submit()">SAVE</button>
+	  </form>
+	</div>
+
+	<script>
+	var app = angular.module('myApp', []);
+	app.controller('formCtrl', function($scope,$http) {	    
+	    $scope.submit = function() {
+	   $http.post('https://samplerestdept.run.aws-usw02-pr.ice.predix.io/setEmployeeFromDB/')
+	    .then( function(response) {
+		console.log("data is " + JSON.stringify(response.data));
+		$scope.empdata = response.data;
+
+	    });	
+	  };	
+	});
+	</script>
+
+
+    <div class="footer">
+      <div class="footer-logo-container">
+        <img class="footer-logo" src="/images/monogram-wdmk.png"></img>
+      </div>
+    </div>
+  </body>
+
+</html>
