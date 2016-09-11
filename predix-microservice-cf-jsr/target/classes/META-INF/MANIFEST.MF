@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: predix-microservice-cf-jsr
 Implementation-Version: 1.1.6
-Built-By: predix
+Built-By: SuchiVenkat
 Implementation-Vendor-Id: com.ge.predix.solsvc
-Build-Jdk: 1.8.0_71
+Build-Jdk: 1.8.0_77
 Created-By: Maven Integration for Eclipse
 Implementation-Vendor: Pivotal Software, Inc.
 
